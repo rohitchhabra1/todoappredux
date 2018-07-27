@@ -1,6 +1,3 @@
-import clone from "lodash/clone";
-import map from "lodash/map";
-import pullAt from "lodash/pullAt";
 import { handleActions } from "redux-actions";
 import { addTodo, editTodo, toggleTodo } from "./Actions";
 import update from "immutability-helper";
@@ -29,7 +26,7 @@ const handleEditTodo = (state, { payload: { text, id } }) => {
   if (text === "") {
     return update(state, {
       todo: {
-        $splice: [[id, id]]
+        $splice: [[id, 1]]
       }
     });
   } else {

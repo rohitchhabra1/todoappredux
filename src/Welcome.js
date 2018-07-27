@@ -30,6 +30,7 @@ class Welcome extends React.Component {
             className={this.state.btn}
             value={this.state.value}
             onChange={this.handleChange}
+            placeholder='Add Todos here...'
           />
           <input type="submit" value="Submit" />
         </form>
