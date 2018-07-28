@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const Listitems = ({ todo, toggleTodo, editTodo }) => {
+const Listitems = ({ todo, toggleTodo, editTodo, match }) => {
   if (todo == null) {
     return <p>nothing to show</p>;
   }
@@ -9,15 +10,9 @@ const Listitems = ({ todo, toggleTodo, editTodo }) => {
       <input
         type="checkbox"
         checked={item.completed}
-        onClick={() => toggleTodo(index)}
+        onChange={() => toggleTodo(index)}
       />
-      <input
-        className="listitemtitle"
-        type="text"
-        id={index}
-        value={item.text}
-        onChange={event => editTodo(event.target.value, event.target.id)}
-      />
+      <Link to={`/edittodo/${index}`}>{item.text}</Link>
       {item.completed && <span className="badge comp">Completed</span>}
     </li>
   ));

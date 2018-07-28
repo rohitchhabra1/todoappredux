@@ -1,14 +1,17 @@
-import Listitems from "./Listitems";
-import { toggleTodo } from "./Actions";
 import { connect } from "react-redux";
+import Edititem from "./Edititem";
+import { editTodo } from "./Actions";
 
 const mapStateToProps = state => ({
   todo: state.todo
 });
 const mapDispatchToProps = dispatch => ({
-  toggleTodo: id => dispatch(toggleTodo(id))
+  editTodo: (text, id) => {
+    dispatch(editTodo(text, id));
+  }
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Listitems);
+)(Edititem);

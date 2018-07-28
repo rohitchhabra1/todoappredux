@@ -1,18 +1,26 @@
 import React from "react";
-import Welcome from "./Welcome";
-import ContainsListitems from "./ContainsListitems";
 import "./App.css";
+import { Link } from "react-router-dom";
 
-const App = () => {
-  return (
-    <div className="container">
-      <div className="row">
-        <h3>TodoApp</h3>
-        <ContainsListitems />
-        <Welcome />
+class App extends React.Component {
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <h3>TodoApp</h3>
+          <ul>
+            <li>
+              <Link to="/">AddTodo</Link>
+            </li>
+            <li>
+              <Link to="/listtodo">ListTodo</Link>
+            </li>
+          </ul>
+          <div>{this.props.children}</div>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default App;
