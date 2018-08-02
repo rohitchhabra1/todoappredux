@@ -1,33 +1,53 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { requestedittodo } from "./Actions";
+import forEach from "lodash/forEach";
 
-export default class Edititem extends React.Component {
-  constructor({ todo, match, editTodo }) {
+class Edititem extends React.Component {
+  constructor({ match }) {
     super();
-    this.editTodo = editTodo;
     this.input = match.params.id;
-    this.state = todo[this.input];
+    this.state = { value: "" };
   }
+  componentWillMount() {
+    forEach(this.props.data, (item, index) => {
+      if (this.input == item.id) {
+        this.setState({ value: item.text });
+      }
+    });
+  }
+  handleSubmit = () => {
+    this.props.edittodo({ text: this.state.value, id: this.input });
+  };
   render() {
-    if (this.input) {
-      if (!this.state) return <Redirect to="/listtodo" />;
-      if (!this.state.text) return <Redirect to="/listtodo" />;
+    if (this.props.isES) {
+      return <Redirect to="/listtodo" />;
     }
     return (
       <div>
         <h4>Edit item at {this.input}:</h4>
-        <form>
           <input
             type="text"
-            value={this.state.text}
+            value={this.state.value}
             onChange={event => {
-              this.setState({ text: event.target.value });
-              this.editTodo(event.target.value, this.input);
+              this.setState({ value: event.target.value });
             }}
           />
-          Make Changes and Goto List Page
-        </form>
+          <button onClick={this.handleSubmit}>Click</button>
       </div>
     );
   }
 }
+const mapStateToProps = state => ({
+  data: state.data,
+  isES: state.isEditSuccess
+});
+const mapDispatchToProps = dispatch => ({
+  edittodo: payload => dispatch(requestedittodo(payload))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Edititem);

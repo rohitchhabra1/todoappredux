@@ -1,12 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo } from "./Actions";
+import { requestaddtodo } from "./Actions";
 
+if (!localStorage.getItem("todocount")) {
+  localStorage.setItem("todocount", 1);
+}
 class Welcome extends React.Component {
   constructor({ dispatch }) {
     super();
     this.dispatch = dispatch;
-    this.todoid = 0;
+    this.todoid = localStorage.getItem("todocount");
     this.state = { value: "", btn: "text" };
   }
   handleSubmit = e => {
@@ -15,7 +18,8 @@ class Welcome extends React.Component {
       this.setState({ btn: "error" });
       return;
     }
-    this.dispatch(addTodo(this.state.value, this.todoid++));
+    this.props.addtodo({ text: this.state.value, id: this.todoid++ });
+    localStorage.setItem("todocount", this.todoid);
     this.setState({ value: "" });
   };
   handleChange = e => {
@@ -30,7 +34,7 @@ class Welcome extends React.Component {
             className={this.state.btn}
             value={this.state.value}
             onChange={this.handleChange}
-            placeholder='Add Todos here...'
+            placeholder="Add Todos here..."
           />
           <input type="submit" value="Submit" />
         </form>
@@ -38,5 +42,17 @@ class Welcome extends React.Component {
     );
   }
 }
+const mapsStatetoProps = state => ({
+  data: state.data
+});
 
-export default connect()(Welcome);
+const mapDispatchToProps = dispatch => ({
+  addtodo: payload => {
+    dispatch(requestaddtodo(payload));
+  }
+});
+
+export default connect(
+  mapsStatetoProps,
+  mapDispatchToProps
+)(Welcome);
