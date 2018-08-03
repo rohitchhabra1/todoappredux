@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { requestEditTodo } from "./Actions";
-import forEach from "lodash/forEach";
+import _ from "lodash";
 
 class Edititem extends React.Component {
   constructor({ match }) {
@@ -11,7 +11,7 @@ class Edititem extends React.Component {
     this.state = { value: "" };
   }
   componentWillMount() {
-    forEach(this.props.data, (item, index) => {
+    _.forEach(this.props.data, (item, index) => {
       if (this.input == item.id) {
         this.setState({ value: item.text });
       }

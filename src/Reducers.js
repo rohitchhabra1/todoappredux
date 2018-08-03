@@ -40,7 +40,8 @@ const requestGetTodo = (state, action) =>
   update(state, {
     isGL: { $set: true },
     isGS: { $set: false },
-    isGE: { $set: false }
+    isGE: { $set: false },
+    isEditSuccess: {$set: false}
   });
 const successGetTodo = (state, action) =>
   update(state, {

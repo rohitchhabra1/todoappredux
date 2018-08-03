@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { requestGetTodo, requestToggleTodo } from "./Actions";
-import map from "lodash/map";
+import _ from "lodash";
 
 class Listitems extends React.Component {
   componentWillMount() {
@@ -12,7 +12,7 @@ class Listitems extends React.Component {
     if (this.props.data == null) {
       return <p>nothing to show</p>;
     };
-    const listitem = map(this.props.data, (item, index) => (
+    const listitem = _.map(this.props.data, (item, index) => (
       <li className="listli" key={index}>
         <input
           type="checkbox"

@@ -1,15 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { requestAddTodo } from "./Actions";
+import storageHelper from './services/storageHelper' 
 
-if (!localStorage.getItem("todocount")) {
-  localStorage.setItem("todocount", 1);
-}
+
 class Welcome extends React.Component {
-  constructor({ dispatch }) {
+  constructor() {
     super();
-    this.dispatch = dispatch;
-    this.todoid = localStorage.getItem("todocount");
+    this.todoid = storageHelper();
     this.state = { value: "", btn: "text" };
   }
   handleSubmit = e => {
@@ -19,7 +17,7 @@ class Welcome extends React.Component {
       return;
     }
     this.props.addTodo({ text: this.state.value, id: this.todoid++ });
-    localStorage.setItem("todocount", this.todoid);
+    storageHelper(this.todoid);
     this.setState({ value: "" });
   };
   handleChange = e => {
