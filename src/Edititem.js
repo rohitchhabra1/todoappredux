@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { requestedittodo } from "./Actions";
+import { requestEditTodo } from "./Actions";
 import forEach from "lodash/forEach";
 
 class Edititem extends React.Component {
@@ -18,7 +18,7 @@ class Edititem extends React.Component {
     });
   }
   handleSubmit = () => {
-    this.props.edittodo({ text: this.state.value, id: this.input });
+      this.props.editTodo({ text: this.state.value, id: this.input });
   };
   render() {
     if (this.props.isES) {
@@ -27,14 +27,16 @@ class Edititem extends React.Component {
     return (
       <div>
         <h4>Edit item at {this.input}:</h4>
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={event => {
-              this.setState({ value: event.target.value });
-            }}
-          />
-          <button onClick={this.handleSubmit}>Click</button>
+        <input
+          type="text"
+          value={this.state.value}
+          onChange={event => {
+            this.setState({ value: event.target.value });
+          }}
+        />
+        {this.state.value &&
+        <button onClick={this.handleSubmit}>Click</button>
+        }
       </div>
     );
   }
@@ -44,7 +46,7 @@ const mapStateToProps = state => ({
   isES: state.isEditSuccess
 });
 const mapDispatchToProps = dispatch => ({
-  edittodo: payload => dispatch(requestedittodo(payload))
+  editTodo: payload => dispatch(requestEditTodo(payload))
 });
 
 export default connect(

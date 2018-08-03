@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { requestaddtodo } from "./Actions";
+import { requestAddTodo } from "./Actions";
 
 if (!localStorage.getItem("todocount")) {
   localStorage.setItem("todocount", 1);
@@ -18,7 +18,7 @@ class Welcome extends React.Component {
       this.setState({ btn: "error" });
       return;
     }
-    this.props.addtodo({ text: this.state.value, id: this.todoid++ });
+    this.props.addTodo({ text: this.state.value, id: this.todoid++ });
     localStorage.setItem("todocount", this.todoid);
     this.setState({ value: "" });
   };
@@ -47,8 +47,8 @@ const mapsStatetoProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addtodo: payload => {
-    dispatch(requestaddtodo(payload));
+  addTodo: payload => {
+    dispatch(requestAddTodo(payload));
   }
 });
 
