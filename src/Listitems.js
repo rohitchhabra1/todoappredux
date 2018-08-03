@@ -9,16 +9,16 @@ class Listitems extends React.Component {
     this.props.getTodo();
   }
   render() {
-    if (this.props.data == null) {
-      return <p>nothing to show</p>;
+    if (this.props.isTS) {
+      this.props.getTodo();
     };
     const listitem = _.map(this.props.data, (item, index) => (
       <li className="listli" key={index}>
         <input
           type="checkbox"
           checked={item.completed}
-          onChange={() => this.props.toggleTodo(item.id) }
-        />
+          onChange={() => this.props.toggleTodo({text:item.text,id: item.id,completed:!item.completed}) }
+          />
         <Link to={`/edittodo/${item.id}`}>{item.text}</Link>
         {item.completed && <span className="badge comp">Completed</span>}
       </li>
@@ -31,7 +31,8 @@ class Listitems extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  data: state.data
+  data: state.data,
+  isTS: state.isToggleSuccess
 });
 const mapDispatchToProps = dispatch => ({
   getTodo: () => dispatch(requestGetTodo()),

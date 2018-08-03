@@ -13,6 +13,9 @@ const defaultState = {
   isEditing: false,
   isEditSuccess: false,
   isEditError: false,
+  isToggle: false,
+  isToggleSuccess: false,
+  isToggleError: false,
   message: ""
 };
 
@@ -41,7 +44,7 @@ const requestGetTodo = (state, action) =>
     isGL: { $set: true },
     isGS: { $set: false },
     isGE: { $set: false },
-    isEditSuccess: {$set: false}
+    isEditSuccess: { $set: false }
   });
 const successGetTodo = (state, action) =>
   update(state, {
@@ -76,6 +79,27 @@ const errorEditTodo = (state, action) =>
     isEditing: { $set: false },
     isEditSuccess: { $set: false },
     isEditError: { $set: true }
+  });
+
+const requestToggleTodo = (state, action) =>
+  update(state, {
+    isToggle: { $set: true },
+    isToggleSuccess: { $set: false },
+    isToggleError: { $set: false }
+  });
+const successToggleTodo = (state, action) =>
+  update(state, {
+    data: { $set: action.payload },
+    isToggle: { $set: false },
+    isToggleSuccess: { $set: true },
+    isToggleError: { $set: false }
+  });
+
+const errorToggleTodo = (state, action) =>
+  update(state, {
+    isToggle: { $set: false },
+    isToggleSuccess: { $set: false },
+    isToggleError: { $set: true }
   });
 
 /* const handleAddTodo = (state, { payload: { text, id } }) =>
@@ -122,6 +146,10 @@ export const TodoApp = handleActions(
     [constants.REQUEST_GET_TODO]: requestGetTodo,
     [constants.SUCCESS_GET_TODO]: successGetTodo,
     [constants.ERROR_GET_TODO]: errorGetTodo,
+
+    [constants.REQUEST_TOGGLE_TODO]: requestToggleTodo,
+    [constants.SUCCESS_TOGGLE_TODO]: successToggleTodo,
+    [constants.ERROR_TOGGLE_TODO]: errorToggleTodo,
 
     [constants.REQUEST_EDIT_TODO]: requestEditTodo,
     [constants.SUCCESS_EDIT_TODO]: successEditTodo,
