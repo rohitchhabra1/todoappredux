@@ -88,8 +88,8 @@ const requestToggleTodo = (state, action) =>
     isToggleError: { $set: false }
   });
 const successToggleTodo = (state, action) =>
-  update(state, {
-    data: { $set: action.payload },
+  update(state, {/* 
+    data: { $set: action.payload }, */
     isToggle: { $set: false },
     isToggleSuccess: { $set: true },
     isToggleError: { $set: false }
@@ -102,41 +102,6 @@ const errorToggleTodo = (state, action) =>
     isToggleError: { $set: true }
   });
 
-/* const handleAddTodo = (state, { payload: { text, id } }) =>
-  update(state, {
-    todo: { $push: [{ id: id, text: text, completed: false }] }
-  });
-
-const handleToggleTodo = (state, { payload: { id } }) =>
-  update(state, {
-    todo: {
-      [id]: {
-        completed: {
-          $apply: function(x) {
-            return !x;
-          }
-        }
-      }
-    }
-  });
-
-const handleEditTodo = (state, { payload: { text, id } }) => {
-  if (text === "") {
-    return update(state, {
-      todo: {
-        $splice: [[id, 1]]
-      }
-    });
-  } else {
-    return update(state, {
-      todo: {
-        [id]: {
-          text: { $set: text }
-        }
-      }
-    });
-  }
-}; */
 export const TodoApp = handleActions(
   {
     [constants.REQUEST_ADD_TODO]: requestAddTodo,

@@ -9,16 +9,19 @@ class Listitems extends React.Component {
     this.props.getTodo();
   }
   render() {
-    if (this.props.isTS) {
-      this.props.getTodo();
-    };
     const listitem = _.map(this.props.data, (item, index) => (
       <li className="listli" key={index}>
         <input
           type="checkbox"
           checked={item.completed}
-          onChange={() => this.props.toggleTodo({text:item.text,id: item.id,completed:!item.completed}) }
-          />
+          onChange={() =>
+            this.props.toggleTodo({
+              text: item.text,
+              id: item.id,
+              completed: !item.completed
+            })
+          }
+        />
         <Link to={`/edittodo/${item.id}`}>{item.text}</Link>
         {item.completed && <span className="badge comp">Completed</span>}
       </li>
@@ -36,7 +39,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   getTodo: () => dispatch(requestGetTodo()),
-  toggleTodo: (id) => dispatch(requestToggleTodo(id))
+  toggleTodo: id => dispatch(requestToggleTodo(id))
 });
 export default connect(
   mapStateToProps,

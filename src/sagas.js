@@ -33,8 +33,6 @@ function* getData(action) {
   }
 }
 function* toggleData(action) {
-  console.log('toggledata');
-  
   try {
     const response = yield call(
       callAxios,
@@ -43,8 +41,8 @@ function* toggleData(action) {
       action.payload
     );
     if (response) {
-      console.log(response);
-      yield put(actions.successToggleTodo(response.data));
+      yield all([getData({ type: "REQUEST_GET_TODO" })]);
+      //yield put(actions.successToggleTodo(response.data));
     } else {
       yield put(actions.errorToggleTodo("error!!!"));
     }
@@ -54,22 +52,6 @@ function* toggleData(action) {
 }
 
 function* editData(action) {
-  /* if (action.payload.text == "") {
-    try {
-      const response = yield call(
-        callAxios,
-        "todo/" + action.payload.id,
-        "DELETE"
-      );
-      if (response) {
-        yield put(actions.successEditTodo(response.data));
-      } else {
-        yield put(actions.errorEditTodo("error!!!"));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  } else { */
   const data = {
     id: action.payload.id,
     text: action.payload.text,
@@ -90,7 +72,6 @@ function* editData(action) {
   } catch (error) {
     console.log(error);
   }
-  /*  } */
 }
 function* watchData() {
   yield takeLatest(constants.REQUEST_ADD_TODO, addData);
