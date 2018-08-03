@@ -1,24 +1,27 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
 import { TodoApp } from "./Reducers";
 import ReactDOM from "react-dom";
 import React from "react";
 import { Provider } from "react-redux";
 import App from "./App";
-import {BrowserRouter as Router, Route} from 'react-router-dom'
-import ContainsListitems from "./ContainsListitems";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Listitems from "./Listitems";
 import Welcome from "./Welcome";
-import ContainsEdititem from "./ContainsEdititem";
+import Edititem from "./Edititem";
+import rootSaga from "./sagas";
 
-const store = createStore(TodoApp);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(TodoApp, applyMiddleware(sagaMiddleware));
 
+sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <Provider store={store}>
     <Router>
       <App>
-        <Route exact path='/' component={Welcome}/>
-        <Route path='/listtodo' component={ContainsListitems}/>{/* 
-        <Route path='/edittodo' component={ContainsEdititem}/> */}
-        <Route path='/edittodo/:id' component={ContainsEdititem} />
+        <Route exact path="/" component={Welcome} />
+        <Route path="/listtodo" component={Listitems} />
+        <Route path="/edittodo/:id" component={Edititem} />
       </App>
     </Router>
   </Provider>,

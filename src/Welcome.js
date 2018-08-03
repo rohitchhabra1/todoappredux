@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTodo } from "./Actions";
+import { requestAddTodo } from "./Actions";
+import storageHelper from './services/storageHelper' 
+
 
 class Welcome extends React.Component {
-  constructor({ dispatch }) {
+  constructor() {
     super();
-    this.dispatch = dispatch;
-    this.todoid = 0;
+    this.todoid = storageHelper();
     this.state = { value: "", btn: "text" };
   }
   handleSubmit = e => {
@@ -15,7 +16,8 @@ class Welcome extends React.Component {
       this.setState({ btn: "error" });
       return;
     }
-    this.dispatch(addTodo(this.state.value, this.todoid++));
+    this.props.addTodo({ text: this.state.value, id: this.todoid++ });
+    storageHelper(this.todoid);
     this.setState({ value: "" });
   };
   handleChange = e => {
@@ -30,7 +32,7 @@ class Welcome extends React.Component {
             className={this.state.btn}
             value={this.state.value}
             onChange={this.handleChange}
-            placeholder='Add Todos here...'
+            placeholder="Add Todos here..."
           />
           <input type="submit" value="Submit" />
         </form>
@@ -38,5 +40,17 @@ class Welcome extends React.Component {
     );
   }
 }
+const mapsStatetoProps = state => ({
+  data: state.data
+});
 
-export default connect()(Welcome);
+const mapDispatchToProps = dispatch => ({
+  addTodo: payload => {
+    dispatch(requestAddTodo(payload));
+  }
+});
+
+export default connect(
+  mapsStatetoProps,
+  mapDispatchToProps
+)(Welcome);
