@@ -11,25 +11,25 @@ function* addData(action) {
   };
   try {
     const response = yield call(callAxios, "todo", "POST", data);
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield put(actions.successAddTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorAddTodo("error"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorAddTodo("error"));
   }
 }
 function* getData(action) {
   try {
     const response = yield call(callAxios, "todo", "GET");
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield put(actions.successGetTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorGetTodo("error"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorGetTodo("error"));
   }
 }
 function* toggleData(action) {
@@ -40,14 +40,14 @@ function* toggleData(action) {
       "PUT",
       action.payload
     );
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield all([getData({ type: "REQUEST_GET_TODO" })]);
       //yield put(actions.successToggleTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorToggleTodo("error!!!"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorToggleTodo("error!!!"));
   }
 }
 
@@ -64,13 +64,13 @@ function* editData(action) {
       "PUT",
       data
     );
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield put(actions.successEditTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorEditTodo("error!!!"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorEditTodo("error!!!"));
   }
 }
 function* watchData() {
