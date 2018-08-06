@@ -13,6 +13,9 @@ const defaultState = {
   isEditing: false,
   isEditSuccess: false,
   isEditError: false,
+  isToggle: false,
+  isToggleSuccess: false,
+  isToggleError: false,
   message: ""
 };
 
@@ -41,7 +44,7 @@ const requestGetTodo = (state, action) =>
     isGL: { $set: true },
     isGS: { $set: false },
     isGE: { $set: false },
-    isEditSuccess: {$set: false}
+    isEditSuccess: { $set: false }
   });
 const successGetTodo = (state, action) =>
   update(state, {
@@ -78,41 +81,27 @@ const errorEditTodo = (state, action) =>
     isEditError: { $set: true }
   });
 
-/* const handleAddTodo = (state, { payload: { text, id } }) =>
+const requestToggleTodo = (state, action) =>
   update(state, {
-    todo: { $push: [{ id: id, text: text, completed: false }] }
+    isToggle: { $set: true },
+    isToggleSuccess: { $set: false },
+    isToggleError: { $set: false }
+  });
+const successToggleTodo = (state, action) =>
+  update(state, {/* 
+    data: { $set: action.payload }, */
+    isToggle: { $set: false },
+    isToggleSuccess: { $set: true },
+    isToggleError: { $set: false }
   });
 
-const handleToggleTodo = (state, { payload: { id } }) =>
+const errorToggleTodo = (state, action) =>
   update(state, {
-    todo: {
-      [id]: {
-        completed: {
-          $apply: function(x) {
-            return !x;
-          }
-        }
-      }
-    }
+    isToggle: { $set: false },
+    isToggleSuccess: { $set: false },
+    isToggleError: { $set: true }
   });
 
-const handleEditTodo = (state, { payload: { text, id } }) => {
-  if (text === "") {
-    return update(state, {
-      todo: {
-        $splice: [[id, 1]]
-      }
-    });
-  } else {
-    return update(state, {
-      todo: {
-        [id]: {
-          text: { $set: text }
-        }
-      }
-    });
-  }
-}; */
 export const TodoApp = handleActions(
   {
     [constants.REQUEST_ADD_TODO]: requestAddTodo,
@@ -122,6 +111,10 @@ export const TodoApp = handleActions(
     [constants.REQUEST_GET_TODO]: requestGetTodo,
     [constants.SUCCESS_GET_TODO]: successGetTodo,
     [constants.ERROR_GET_TODO]: errorGetTodo,
+
+    [constants.REQUEST_TOGGLE_TODO]: requestToggleTodo,
+    [constants.SUCCESS_TOGGLE_TODO]: successToggleTodo,
+    [constants.ERROR_TOGGLE_TODO]: errorToggleTodo,
 
     [constants.REQUEST_EDIT_TODO]: requestEditTodo,
     [constants.SUCCESS_EDIT_TODO]: successEditTodo,

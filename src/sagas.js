@@ -11,67 +11,68 @@ function* addData(action) {
   };
   try {
     const response = yield call(callAxios, "todo", "POST", data);
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield put(actions.successAddTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorAddTodo("error"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorAddTodo("error"));
   }
-  }
+}
 function* getData(action) {
   try {
     const response = yield call(callAxios, "todo", "GET");
-    if (response) {
+    if (response && (response.status == "200" || response.status == "304")) {
       yield put(actions.successGetTodo(response.data));
-    } else {
+    } else if (response && response.error === 1) {
       yield put(actions.errorGetTodo("error"));
     }
   } catch (error) {
-    console.log(error);
+    yield put(actions.errorGetTodo("error"));
   }
 }
-function* editData(action) {
-  /* if (action.payload.text == "") {
-    try {
-      const response = yield call(
-        callAxios,
-        "todo/" + action.payload.id,
-        "DELETE"
-      );
-      if (response) {
-        yield put(actions.successEditTodo(response.data));
-      } else {
-        yield put(actions.errorEditTodo("error!!!"));
-      }
-    } catch (error) {
-      console.log(error);
+function* toggleData(action) {
+  try {
+    const response = yield call(
+      callAxios,
+      "todo/" + action.payload.id,
+      "PUT",
+      action.payload
+    );
+    if (response && (response.status == "200" || response.status == "304")) {
+      yield all([getData({ type: "REQUEST_GET_TODO" })]);
+      //yield put(actions.successToggleTodo(response.data));
+    } else if (response && response.error === 1) {
+      yield put(actions.errorToggleTodo("error!!!"));
     }
-  } else { */
-    const data = {
-      id: action.payload.id,
-      text: action.payload.text,
-      completed: false
-    };
-    try {
-      const response = yield call(
-        callAxios,
-        "todo/" + action.payload.id,
-        "PUT",
-        data
-      );
-      if (response) {
-        yield put(actions.successEditTodo(response.data));
-      } else {
-        yield put(actions.errorEditTodo("error!!!"));
-      }
-    } catch (error) {
-      console.log(error);
-    }
- /*  } */
+  } catch (error) {
+    yield put(actions.errorToggleTodo("error!!!"));
+  }
 }
-function* toggleData(action) {}
+
+function* editData(action) {
+  const data = {
+    id: action.payload.id,
+    text: action.payload.text,
+    completed: false
+  };
+  try {
+    const response = yield call(
+      callAxios,
+      "todo/" + action.payload.id,
+      "PUT",
+      data
+    );
+    if (response && (response.status == "200" || response.status == "304")) {
+      yield put(actions.successEditTodo(response.data));
+    } else if (response && response.error === 1) {
+      yield put(actions.errorEditTodo("error!!!"));
+    }
+  } catch (error) {
+    yield put(actions.errorEditTodo("error!!!"));
+  }
+}
 function* watchData() {
   yield takeLatest(constants.REQUEST_ADD_TODO, addData);
   yield takeLatest(constants.REQUEST_GET_TODO, getData);
