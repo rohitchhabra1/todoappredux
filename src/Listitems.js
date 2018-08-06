@@ -34,8 +34,7 @@ class Listitems extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  data: state.data,
-  isTS: state.isToggleSuccess
+  data: state.data
 });
 const mapDispatchToProps = dispatch => ({
   getTodo: () => dispatch(requestGetTodo()),
